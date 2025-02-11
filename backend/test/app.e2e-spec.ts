@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { Hero } from 'src/heroes/entity/hero.entity';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -15,10 +16,21 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/api/superheroes (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/api/superheroes')
       .expect(200)
-      .expect('Hello World!');
+      .expect([new Hero()]);
+  });
+
+  it('/api/superheroes (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/api/superheroes')
+      .expect(201)
+      .expect(new Hero());
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });
