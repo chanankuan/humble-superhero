@@ -8,12 +8,13 @@ export class HeroesController {
   constructor(private readonly heroesService: HeroesService) {}
 
   @Get()
-  findAll(): Promise<Hero[]> {
-    return this.heroesService.findAll();
+  async findAll(): Promise<Hero[]> {
+    const heroes = await this.heroesService.findAll();
+    return heroes;
   }
 
   @Post()
-  create(@Body() createHeroDto: CreateHeroDto): Promise<Hero> {
-    return this.heroesService.create(createHeroDto);
+  async create(@Body() createHeroDto: CreateHeroDto): Promise<Hero> {
+    return await this.heroesService.create(createHeroDto);
   }
 }
